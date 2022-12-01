@@ -8,7 +8,7 @@ class SwerveModule:
     driveMotor: rev.CANSparkMax
     turningMotor: rev.CANSparkMax
 
-    relativeEncoder: rev.RelativeEncoder
+    driveEncoder: rev.RelativeEncoder
     turningEncoder : ThriftyEncoder
 
     drivePIDController: rev.SparkMaxPIDController
@@ -18,9 +18,12 @@ class SwerveModule:
     turnFeedForward: controller.SimpleMotorFeedforwardMeters
     
     def setup(self):
-        self.turningEncoder = 
         self.turningPIDController.enableContinuousInput(-math.pi, math.pi)
         self.driveEncoder = self.driveMotor.getEncoder()
         self.drivePIDController = self.driveMotor.getPIDController()
     def getState(self):
-        return kinematics.SwerveModuleState(self.driveEncoder.getVelocity(),self)
+        return kinematics.SwerveModuleState(self.driveEncoder.getVelocity(),self.turningEncoder.getAngle())
+    def setDesiredState(self,desiredState):
+        self.state = kinematics.SwerveModuleState.optimize(desiredState,self.turningEncoder.getAngle())
+        driveFeedforwardOut = self.driveFeedForward.calculate(self.state.speed_fps)
+        turnOutput = self.turningPIDController.calculate(self.turningPIDController.getSetpoint().velocity)
