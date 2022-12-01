@@ -2,13 +2,14 @@ import wpilib
 from wpimath import controller, kinematics, trajectory
 import math
 import rev
+from thriftyencoder import ThriftyEncoder
 
 class SwerveModule:
     driveMotor: rev.CANSparkMax
     turningMotor: rev.CANSparkMax
 
     relativeEncoder: rev.RelativeEncoder
-    # thriftyEncoder : 
+    turningEncoder : ThriftyEncoder
 
     drivePIDController: rev.SparkMaxPIDController
     turningPIDController: controller.ProfiledPIDController
@@ -17,7 +18,7 @@ class SwerveModule:
     turnFeedForward: controller.SimpleMotorFeedforwardMeters
     
     def setup(self):
-        self.turningEncoder 
+        self.turningEncoder = 
         self.turningPIDController.enableContinuousInput(-math.pi, math.pi)
         self.driveEncoder = self.driveMotor.getEncoder()
         self.drivePIDController = self.driveMotor.getPIDController()
