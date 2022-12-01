@@ -4,6 +4,9 @@ import typing as t
 from magicbot import magiccomponent
 from swervemodule import SwerveModule
 
+import wpilib
+import rev
+
 class SwerveDrive:
 
     # All of swerve modules
@@ -14,9 +17,6 @@ class SwerveDrive:
 
     # A list of refs to all the modules
     swerveModules: t.List[SwerveModule]
-
-    # Desired module states
-    
 
     def setup(self):
         self.swerveModules = [
