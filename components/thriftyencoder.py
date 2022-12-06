@@ -1,5 +1,4 @@
 import math
-
 from wpimath import geometry
 from wpilib import AnalogInput
 import component_constants as c
@@ -20,4 +19,6 @@ class ThriftyEncoder:
 
     def getAngle(self):
         return self.getAngleRaw() + self.rotOffset
-        
+
+    def resetPosition(self):
+        self.rotOffset = self.getAngleRaw()
