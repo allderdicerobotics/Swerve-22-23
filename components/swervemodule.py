@@ -3,6 +3,7 @@ from wpimath import controller, kinematics, trajectory
 import math
 import rev
 from thriftyencoder import ThriftyEncoder
+from component_constants import DriveProperties
 
 class SwerveModule:
     driveMotor: rev.CANSparkMax
@@ -27,3 +28,6 @@ class SwerveModule:
         self.state = kinematics.SwerveModuleState.optimize(desiredState,self.turningEncoder.getAngle())
         driveFeedforwardOut = self.driveFeedForward.calculate(self.state.speed_fps)
         turnOutput = self.turningPIDController.calculate(self.turningPIDController.getSetpoint().velocity)
+        driveMotorRPM = self.state.speed * 60 / math.pi / DriveProperties.kWheelRadius / 2 * DriveProperties.kDriveWheelGearRatio
+        self.drivePIDController.setReference(driveMotorRPM,rev.CANSparkMax.ControlType.kVelocity,2,driveFeedforwardOut,rev.SparkMaxPIDController.ArbFFUnits.kVoltage)
+        self.turningMotor.setVoltage(turnOutput+turnOutput)
