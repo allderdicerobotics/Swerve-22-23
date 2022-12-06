@@ -5,6 +5,5 @@ class Encoders:
 
 class DriveProperties:
     CHASSIS_DIMS = (1.0, 1.0)
-    kWheelRadius = 0.0508
-    kDriveWheelGearRatio = 6.55
-    
+    WHEEL_RADIUS = 0.0508
+    DRIVE_WHEEL_GEAR_RATIO = 6.55

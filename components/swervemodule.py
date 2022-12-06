@@ -30,6 +30,6 @@ class SwerveModule:
 
         turnOutput = self.turningPIDController.calculate(self.turningEncoder.getAngle().radians(),self.state.angle.radians())
         turnFeedforwardOut = self.turnFeedForward.calculate(self.turningPIDController.getSetpoint().velocity)
-        driveMotorRPM = self.state.speed * 60 / math.pi / DriveProperties.kWheelRadius / 2 * DriveProperties.kDriveWheelGearRatio
+        driveMotorRPM = self.state.speed * 60 / math.pi / DriveProperties.WHEEL_RADIUS / 2 * DriveProperties.DRIVE_WHEEL_GEAR_RATIO
         self.drivePIDController.setReference(driveMotorRPM,rev.CANSparkMax.ControlType.kVelocity,2,driveFeedforwardOut,rev.SparkMaxPIDController.ArbFFUnits.kVoltage)
         self.turningMotor.setVoltage(turnOutput+turnOutput)
