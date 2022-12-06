@@ -6,17 +6,23 @@ from swervemodule import SwerveModule
 
 import wpilib
 import rev
+import attrs
 
 import component_constants as c
 
-class SwerveControlT(t.TypedDict):
+@attrs.define
+class SwerveControl:
     """
-    A type representing a dictionary with the values that define what
-    we want the swerve drive to do.
+    What we want the swerve drive to do in terms of higher-level stuff rather
+    than motor speeds and angles. 
     """
-    fwd: float          # [-1, 1]
-    strafe: float
-    rcw: float
+    fwd: float          # in range [-1, 1]
+    strafe: float       # in range [-1, 1]
+    rcw: float          # in range [-1, 1]
+
+    def compute_speeds(self) -> t.List[float]: ...
+
+    def compute_angles(self) -> t.List[float]: ...
 
 class SwerveDrive:
 
@@ -33,7 +39,7 @@ class SwerveDrive:
     chassisDims: t.Tuple[float, float] = c.DriveProperties.CHASSIS_DIMS
 
     # The intended vectors for controlling the swerve modules
-    controlIntent: t.
+    controlIntent: SwerveControlT
 
     def setup(self):
         self.swerveModules = [
