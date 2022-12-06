@@ -57,7 +57,7 @@ class SwerveDrive:
     swerveModules: PerModule[SwerveModule]
 
     # The intended vectors for controlling the swerve modules
-    _controlIntent: SwerveControlT
+    controlIntent: SwerveControl
 
     def setup(self):
         self.swerveModules = {
@@ -66,3 +66,10 @@ class SwerveDrive:
             "BL": self.swerveModuleBL,
             "BR": self.swerveModuleBR,
         }
+
+    def execute(self):
+        states = self.controlIntent.compute_states()
+        for key, module in self.swerveModules:
+            module.setDesiredState(states[key])
+        for _, module in self.swerveModules:
+            module.execute()
