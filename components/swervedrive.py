@@ -4,11 +4,16 @@ import typing as t
 from magicbot import magiccomponent
 from swervemodule import SwerveModule
 
+from wpimath import kinematics
+
 import wpilib
 import rev
 import attrs
 
 import component_constants as c
+
+T = t.TypeVar("T")
+PerModule = t.Dict[t.Literal["FL", "FR", "BL", "BR"], T]
 
 @attrs.define
 class SwerveControl:
@@ -19,10 +24,26 @@ class SwerveControl:
     fwd: float          # in range [-1, 1]
     strafe: float       # in range [-1, 1]
     rcw: float          # in range [-1, 1]
-
-    def compute_speeds(self) -> t.List[float]: ...
-
-    def compute_angles(self) -> t.List[float]: ...
+    
+    def compute_states(self) -> PerModule[kinematics.SwerveModuleState]:
+        (length, width) = c.DriveProperties.CHASSIS_DIMS
+        dist = math.hypot(length, width)
+        quadrants = {
+            "F": self.strafe - (self.rcw * (length / dist)),
+            "B": self.strafe + (self.rcw * (length / dist)),
+            "L": self.fwd + (self.rcw * (width / dist)),
+            "R": self.fwd - (self.rcw * (width / dist)),
+        }
+        return {
+            key: self.compute_state(key, quadrants)
+            for key in ("FL", "FR", "BL", "BR")
+        }
+    
+    def compute_state(self, key, quadrants) -> kinematics.SwerveModuleState:
+        [xCom, yCom] = [ quadrants[c] for c in key ]
+        speed = math.hypot(xCom, yCom)
+        angle = math.degrees(math.atan2(xCom, yCom))
+        return kinematics.SwerveModuleState(speed, angle)
 
 class SwerveDrive:
 
@@ -33,20 +54,15 @@ class SwerveDrive:
     swerveModuleBR: SwerveModule
 
     # A list of refs to all the modules
-    swerveModules: t.List[SwerveModule]
-
-    # The dimensions of the chassis
-    chassisDims: t.Tuple[float, float] = c.DriveProperties.CHASSIS_DIMS
+    swerveModules: PerModule[SwerveModule]
 
     # The intended vectors for controlling the swerve modules
-    controlIntent: SwerveControlT
+    _controlIntent: SwerveControlT
 
     def setup(self):
-        self.swerveModules = [
-            self.swerveModuleFL,
-            self.swerveModuleFR,
-            self.swerveModuleBL,
-            self.swerveModuleBR,
-        ]
-
-
+        self.swerveModules = {
+            "FL": self.swerveModuleFL,
+            "FR": self.swerveModuleFR,
+            "BL": self.swerveModuleBL,
+            "BR": self.swerveModuleBR,
+        }
