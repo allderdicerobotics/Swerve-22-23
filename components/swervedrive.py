@@ -15,6 +15,8 @@ import component_constants as c
 T = t.TypeVar("T")
 PerModule = t.Dict[t.Literal["FL", "FR", "BL", "BR"], T]
 
+SWERVE_MODULE_TAGS = ("FL", "FR", "BL", "BR")
+
 @attrs.define
 class SwerveControl:
     """
@@ -36,7 +38,7 @@ class SwerveControl:
         }
         return {
             key: self.compute_state(key, quadrants)
-            for key in ("FL", "FR", "BL", "BR")
+            for key in SWERVE_MODULE_TAGS
         }
     
     def compute_state(self, key, quadrants) -> kinematics.SwerveModuleState:
@@ -61,10 +63,8 @@ class SwerveDrive:
 
     def setup(self):
         self.swerveModules = {
-            "FL": self.swerveModuleFL,
-            "FR": self.swerveModuleFR,
-            "BL": self.swerveModuleBL,
-            "BR": self.swerveModuleBR,
+            tag: getattr(self, f"swerveModule{tag}")
+            for tag in SWERVE_MODULE_TAGS
         }
 
     def execute(self):
