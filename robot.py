@@ -24,8 +24,12 @@ class FRCRobot(MagicRobot):
     drivetrain_swerveModuleBR: SwerveModule
 
     def createObjects(self):
+        self.setupSwerve()
+
+    def setupSwerve(self):
         self.drivetrain = SwerveDrive()
         self.setupSwerveModules()
+        self.setupSwerveControl()
     
     def setupSwerveModules(self):
         for tag in swervedrive.SWERVE_MODULE_TAGS:
@@ -44,6 +48,9 @@ class FRCRobot(MagicRobot):
                 else:
                     value = item_class(*cfg)
                 setattr(self, f"{module_prop}_{subprop}", value)
+
+    def setupSwerveControl(self):
+        self.drivetrain.set_intent_function(self.oi.get_swerve_intent)
 
 # Main section
 if __name__ == "__main__":
