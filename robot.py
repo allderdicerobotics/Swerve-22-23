@@ -6,6 +6,7 @@ import wpilib
 from magicbot import MagicRobot
 import swervedrive
 from swervemodule import SwerveModule
+from oi import OI
 from arguments import Arguments
 
 # Just an alias because we need to import the whole module
@@ -14,6 +15,8 @@ SwerveDrive = swervedrive.SwerveDrive
 # Main robot class
 class FRCRobot(MagicRobot):
     drivetrain: SwerveDrive
+
+    oi: OI
 
     drivetrain_swerveModuleFL: SwerveModule
     drivetrain_swerveModuleFR: SwerveModule
