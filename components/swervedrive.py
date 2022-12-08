@@ -47,6 +47,10 @@ class SwerveControl:
         angle = math.degrees(math.atan2(xCom, yCom))
         return kinematics.SwerveModuleState(speed, angle)
 
+    @classmethod
+    def default(cls):
+        return cls(fwd = 0.0, strafe = 0.0, rcw = 0.0)
+
 class SwerveDrive:
 
     # All of swerve modules (to be injected)
@@ -59,7 +63,7 @@ class SwerveDrive:
     swerveModules: PerModule[SwerveModule]
 
     # The intended vectors for controlling the swerve modules
-    controlIntent: SwerveControl
+    _controlIntent: SwerveControl = SwerveControl.default()
 
     def setup(self):
         self.swerveModules = {
@@ -68,8 +72,11 @@ class SwerveDrive:
         }
 
     def execute(self):
-        states = self.controlIntent.compute_states()
+        states = self._controlIntent.compute_states()
         for key, module in self.swerveModules:
             module.setDesiredState(states[key])
         for _, module in self.swerveModules:
             module.execute()
+
+    def set_intent(self, intent: SwerveControl):
+        self._controlIntent = intent
