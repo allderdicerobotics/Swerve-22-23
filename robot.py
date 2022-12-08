@@ -4,7 +4,6 @@ import outer_constants as oc
 
 import wpilib
 from magicbot import MagicRobot
-from robotcontainer import RobotContainer
 import swervedrive
 from swervemodule import SwerveModule
 from arguments import Arguments
