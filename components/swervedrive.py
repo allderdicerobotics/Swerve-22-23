@@ -63,7 +63,12 @@ class SwerveDrive:
     swerveModules: PerModule[SwerveModule]
 
     # The intended vectors for controlling the swerve modules
-    _controlIntent: SwerveControl = SwerveControl.default()
+    _controlIntent: t.Union[SwerveControl, None] = None
+
+    # A function to provide control intents, which can be overriden by _controlIntent
+    # if it isn't null
+    # If both are null, it will use SwerveControl.default()
+    _controlFunction: t.Callable[[], t.Union[SwerveControl, None]] = lambda: None
 
     def setup(self):
         self.swerveModules = {
@@ -72,11 +77,19 @@ class SwerveDrive:
         }
 
     def execute(self):
-        states = self._controlIntent.compute_states()
+        intent = self._controlIntent
+        if intent == None:
+            intent = self._controlFunction()
+            if intent == None:
+                intent = SwerveControl.default()
+        states = intent.compute_states()
         for key, module in self.swerveModules:
             module.setDesiredState(states[key])
         for _, module in self.swerveModules:
             module.execute()
 
-    def set_intent(self, intent: SwerveControl):
+    def set_intent(self, intent: t.Union[SwerveControl, None]):
         self._controlIntent = intent
+    
+    def set_intent_function(self, intent_function: t.Callable[[], t.Union[SwerveControl, None]]):
+        self._controlFunction = intent_function
