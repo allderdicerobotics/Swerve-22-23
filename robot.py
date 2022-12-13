@@ -35,7 +35,7 @@ class FRCRobot(MagicRobot):
         for tag in swervedrive.SWERVE_MODULE_TAGS:
             module_prop = f"drivetrain_swerveModule{tag}"
             for subprop in ("driveMotor", "turningMotor", "turningEncoder"):
-                cfg = oc.Hw.swerve_cfg[tag][subprop]()
+                cfg = oc.Hw.swerve_cfg[tag][subprop]
                 item_class = SwerveModule.__annotations__[subprop]
                 if isinstance(cfg, dict):
                     value = item_class(**cfg)
