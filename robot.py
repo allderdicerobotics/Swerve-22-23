@@ -4,9 +4,9 @@ import outer_constants as oc
 
 import wpilib
 from magicbot import MagicRobot
-import swervedrive
-from swervemodule import SwerveModule
-from oi import OI
+from components import swervedrive
+from components.swervemodule import SwerveModule
+from components.oi import OI
 from arguments import Arguments
 
 # Just an alias because we need to import the whole module

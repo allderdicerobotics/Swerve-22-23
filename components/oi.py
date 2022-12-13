@@ -1,5 +1,5 @@
 from wpilib import Joystick
-from swervedrive import SwerveControl
+from components.swervedrive import SwerveControl
 
 class OI:
     driver: Joystick = Joystick(0)

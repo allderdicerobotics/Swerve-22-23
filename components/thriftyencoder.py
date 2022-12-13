@@ -1,7 +1,7 @@
 import math
 from wpimath import geometry
 from wpilib import AnalogInput
-import component_constants as c
+import components.component_constants as c
 
 class ThriftyEncoder:
     devInput : AnalogInput

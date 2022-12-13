@@ -2,7 +2,7 @@ import math
 import typing as t
 
 from magicbot import magiccomponent
-from swervemodule import SwerveModule
+from components.swervemodule import SwerveModule
 
 from wpimath import kinematics
 
@@ -10,7 +10,7 @@ import wpilib
 import rev
 import attrs
 
-import component_constants as c
+import components.component_constants as c
 
 T = t.TypeVar("T")
 PerModule = t.Dict[t.Literal["FL", "FR", "BL", "BR"], T]

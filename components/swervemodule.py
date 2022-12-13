@@ -2,8 +2,8 @@ import wpilib
 from wpimath import controller, kinematics, trajectory
 import math
 import rev
-from thriftyencoder import ThriftyEncoder
-from component_constants import DriveProperties
+from components.thriftyencoder import ThriftyEncoder
+from components.component_constants import DriveProperties
 
 
 class SwerveModule:
