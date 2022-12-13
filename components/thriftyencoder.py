@@ -2,14 +2,13 @@ import math
 from wpimath import geometry
 from wpilib import AnalogInput
 import components.component_constants as c
+import attrs
 
+@attrs.define
 class ThriftyEncoder:
     devInput : AnalogInput
     rotOffset : geometry.Rotation2d = geometry.Rotation2d()
     readVoltageMax : float = c.Encoders.STD_VOLTAGE_MAX
-
-    def setup(self):
-        self.standardReadVoltageMax = 4.8
     
     def getAngleRaw(self):
         voltage = self.devInput.getVoltage()

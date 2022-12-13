@@ -2,7 +2,7 @@ from wpilib import Joystick
 from components.swervedrive import SwerveControl
 
 class OI:
-    driver: Joystick = Joystick(0)
+    driver: Joystick
 
     def get_swerve_intent(self):
         return SwerveControl(
@@ -10,3 +10,6 @@ class OI:
             strafe = self.driver.getRawAxis(1),
             rcw = 0.0,
         )
+    
+    def execute(self):
+        pass

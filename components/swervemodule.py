@@ -10,10 +10,10 @@ class SwerveModule:
     driveMotor: rev.CANSparkMax
     turningMotor: rev.CANSparkMax
 
-    driveEncoder: rev.RelativeEncoder
+    driveEncoder: rev.RelativeEncoder = None
     turningEncoder: ThriftyEncoder
 
-    drivePIDController: rev.SparkMaxPIDController
+    drivePIDController: rev.SparkMaxPIDController = None
     turningPIDController: controller.ProfiledPIDController = controller.ProfiledPIDController(1.1, 0, 0,
                                                                                               trajectory.TrapezoidProfile.Constraints(DriveProperties.MODULE_MAX_ANGULAR_VELOCITY,
                                                                                                                                       DriveProperties.MODULE_MAX_ANGULAR_ACCELERATION))
@@ -49,3 +49,6 @@ class SwerveModule:
     def resetEncoders(self):
         self.driveEncoder.setPosition(0)
         self.turningEncoder.resetPosition()
+    
+    def execute(self):
+        pass
