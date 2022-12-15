@@ -6,7 +6,7 @@ import attrs
 
 @attrs.define
 class ThriftyEncoder:
-    devInput : AnalogInput
+    devInput : AnalogInput = None
     rotOffset : geometry.Rotation2d = geometry.Rotation2d()
     readVoltageMax : float = c.Encoders.STD_VOLTAGE_MAX
     

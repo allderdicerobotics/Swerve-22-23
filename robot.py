@@ -46,11 +46,13 @@ class FRCRobot(MagicRobot):
     def createObjects(self):
         self.setupOI()
         self.setupSwerve()
+        print(dir(self))
+        
+    def teleopInit(self):
+        self.setupSwerveControl()
 
     def setupSwerve(self):
-        self.drivetrain = SwerveDrive()
         self.setupSwerveModules()
-        self.setupSwerveControl()
     
     def setupSwerveModules(self):
         for tag in swervedrive.SWERVE_MODULE_TAGS:
@@ -72,6 +74,7 @@ class FRCRobot(MagicRobot):
 
     def setupSwerveControl(self):
         self.drivetrain.set_intent_function(lambda: self.oi.get_swerve_intent())
+        print("registered swerve control function")
     
     def setupOI(self):
         self.oi_driver = wpilib.Joystick(oc.OI.driver_port)

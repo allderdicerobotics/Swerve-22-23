@@ -60,7 +60,7 @@ class SwerveDrive:
     swerveModuleBR: SwerveModule
 
     # A list of refs to all the modules
-    swerveModules: PerModule[SwerveModule]
+    swerveModules: PerModule[SwerveModule] = None
 
     # The intended vectors for controlling the swerve modules
     _controlIntent: t.Union[SwerveControl, None] = None
@@ -71,6 +71,7 @@ class SwerveDrive:
     _controlFunction: t.Callable[[], t.Union[SwerveControl, None]] = lambda: None
 
     def setup(self):
+        print("SwerveDrive setup")
         self.swerveModules = {
             tag: getattr(self, f"swerveModule{tag}")
             for tag in SWERVE_MODULE_TAGS
@@ -82,6 +83,7 @@ class SwerveDrive:
             intent = self._controlFunction()
             if intent == None:
                 intent = SwerveControl.default()
+        print(f"actually running with intent {intent}")
         states = intent.compute_states()
         for key, module in self.swerveModules:
             module.setDesiredState(states[key])
