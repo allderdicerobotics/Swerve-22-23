@@ -46,14 +46,11 @@ class FRCRobot(MagicRobot):
     def createObjects(self):
         self.setupOI()
         self.setupSwerve()
-    
-    def setup(self):
-        self.setupSwerveControl()
 
     def setupSwerve(self):
         self.drivetrain = SwerveDrive()
         self.setupSwerveModules()
-        #| Cannot do this until OI object is set up |# self.setupSwerveControl()
+        self.setupSwerveControl()
     
     def setupSwerveModules(self):
         for tag in swervedrive.SWERVE_MODULE_TAGS:
