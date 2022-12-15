@@ -13,7 +13,7 @@ class ThriftyEncoder:
     def getAngleRaw(self):
         voltage = self.devInput.getVoltage()
         normalized_reading = voltage / self.readVoltageMax
-        angle_radians = normalized_reading * 2 * math.PI
+        angle_radians = normalized_reading * 2 * math.pi
         return geometry.Rotation2d(angle_radians) 
 
     def getAngle(self):

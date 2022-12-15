@@ -7,6 +7,7 @@ from components.swervemodule import SwerveModule
 from wpimath import kinematics
 
 import wpilib
+from wpimath.geometry import Rotation2d
 import rev
 import attrs
 
@@ -45,7 +46,7 @@ class SwerveControl:
         [xCom, yCom] = [ quadrants[c] for c in key ]
         speed = math.hypot(xCom, yCom)
         angle = math.degrees(math.atan2(xCom, yCom))
-        return kinematics.SwerveModuleState(speed, angle)
+        return kinematics.SwerveModuleState(speed, Rotation2d.fromDegrees(angle))
 
     @classmethod
     def default(cls):
@@ -85,9 +86,12 @@ class SwerveDrive:
                 intent = SwerveControl.default()
         print(f"actually running with intent {intent}")
         states = intent.compute_states()
-        for key, module in self.swerveModules:
+        for key in self.swerveModules:
+            module = self.swerveModules[key]
+            print(f"[from dict] key -> {key}, module -> {module}")
             module.setDesiredState(states[key])
-        for _, module in self.swerveModules:
+        for key in self.swerveModules:
+            module = self.swerveModules[key]
             module.execute()
 
     def set_intent(self, intent: t.Union[SwerveControl, None]):
