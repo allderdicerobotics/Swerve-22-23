@@ -74,7 +74,7 @@ class FRCRobot(MagicRobot):
                 setattr(self, f"{module_prop}_{subprop}", value)
 
     def setupSwerveControl(self):
-        self.drivetrain.set_intent_function(self.oi.get_swerve_intent)
+        self.drivetrain.set_intent_function(lambda: self.oi.get_swerve_intent())
     
     def setupOI(self):
         self.oi_driver = wpilib.Joystick(oc.OI.driver_port)
